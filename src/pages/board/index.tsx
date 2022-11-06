@@ -1,11 +1,52 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
+import { FormEvent, useState } from 'react';
 import { FiCalendar, FiClock, FiEdit2, FiPlus, FiTrash } from 'react-icons/fi';
 import { SuportButton } from '../../components/SuportButton';
 import styles from './style.module.scss';
 
-export default function Board() {
+import firebase from '../../services/firebaseConnection';
+
+interface BoardProps {
+  user: {
+    id: string;
+    name: string;
+  }
+}
+
+export default function Board({ user }: BoardProps) {
+
+  const [input, setInput] = useState('');
+
+  async function handleAddTask(e: FormEvent) {
+    e.preventDefault();
+
+    if (input === '') {
+      alert('Por favor, digite uma tarefa!');
+      return;
+    }
+
+    await firebase.firestore().collection('tasks')
+    .add({
+      created: new Date(),
+      task: input,
+      userId: user.id,
+      name: user.name
+    })
+    .then((doc) => {
+      console.log('cadastro com sucesso', doc);
+      alert('Cadastro realizado com sucesso!');
+    })
+    .catch((err) => {
+      console.log('Erro ao cadsatra', err);
+      console.log('Falha ao cadastra a tarefa.');
+    })
+
+
+
+  }
+
   return (
     <>
       <Head>
@@ -13,10 +54,12 @@ export default function Board() {
       </Head>
       <main className={styles.container}>
 
-        <form>
+        <form onSubmit={handleAddTask}>
           <input
             type='text'
             placeholder='Digite sua tarefa'
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <button type='submit'>
             <FiPlus size={25} color='#17181f' />
@@ -77,9 +120,14 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
     }
   }
 
+  const user = {
+    name: session?.user.name,
+    id: session?.id
+  }
+
   return {
     props: {
-
+      user
     }
   }
 }
