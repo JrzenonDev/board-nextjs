@@ -10,17 +10,27 @@ import styles from './style.module.scss';
 import Link from 'next/link';
 import firebase from '../../services/firebaseConnection';
 
+type TaskList = {
+  id: string;
+  created: string | Date;
+  createdFormated?: string;
+  task: string;
+  userId: string;
+  name: string;
+}
+
 interface BoardProps {
   user: {
     id: string;
     name: string;
   }
+  data: string;
 }
 
-export default function Board({ user }: BoardProps) {
+export default function Board({ user, data }: BoardProps) {
 
   const [input, setInput] = useState('');
-  const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState<TaskList[]>(JSON.parse(data));
 
   async function handleAddTask(e: FormEvent) {
     e.preventDefault();
@@ -57,9 +67,6 @@ export default function Board({ user }: BoardProps) {
       console.log('Erro ao cadsatra', err);
       console.log('Falha ao cadastra a tarefa.');
     })
-
-
-
   }
 
   return (
@@ -142,6 +149,16 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
     }
   }
 
+  const tasks = await firebase.firestore().collection('tasks').orderBy('created', 'asc').get();
+
+  const data = JSON.stringify(tasks.docs.map(item => {
+    return {
+      id: item.id,
+      createdFormated: format(item.data().created.toDate(), 'dd MMMM yyyy'),
+      ...item.data(),
+    }
+  }))
+
   const user = {
     name: session?.user.name,
     id: session?.id
@@ -149,7 +166,8 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
 
   return {
     props: {
-      user
+      user,
+      data
     }
   }
 }
