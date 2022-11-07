@@ -88,7 +88,7 @@ export default function Board({ user, data }: BoardProps) {
           </button>
         </form>
 
-        <h1>Você tem 3 tarefas</h1>
+        <h1>Você tem {taskList.length} {taskList.length === 1 ? 'tarefa' : 'tarefas'}!</h1>
 
         <section>
           {taskList.map(task => (
@@ -149,7 +149,9 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
     }
   }
 
-  const tasks = await firebase.firestore().collection('tasks').orderBy('created', 'asc').get();
+  const tasks = await firebase.firestore().collection('tasks')
+    .where('userId', '==', session?.id)
+    .orderBy('created', 'asc').get();
 
   const data = JSON.stringify(tasks.docs.map(item => {
     return {
