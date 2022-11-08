@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import styles from './styles.module.scss';
 
@@ -21,4 +23,23 @@ export default function Donate() {
       </main>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req })
+
+  if (!session?.id) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+
+    }
+  }
 }
