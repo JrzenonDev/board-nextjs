@@ -3,7 +3,15 @@ import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import styles from './styles.module.scss';
 
-export default function Donate() {
+interface DonateProps {
+  user: {
+    name: string;
+    id: string;
+    image: string;
+  }
+}
+
+export default function Donate({ user }: DonateProps) {
   return (
     <>
       <Head>
@@ -13,7 +21,7 @@ export default function Donate() {
         <img src='/images/rocket.svg' alt='Seja apoiador' />
 
         <div className={styles.vip}>
-          <img src='https://avatars.githubusercontent.com/u/11636904?v=4' alt='Seja apoiador' />
+          <img src={user.image} alt='Foto de perfil do usuário' />
           <span>Parabéns você é um apoiador.</span>
         </div>
 
@@ -37,9 +45,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
   }
 
+  const user = {
+    name: session?.user.name,
+    id: session?.id,
+    image: session?.user.image
+  }
+
   return {
     props: {
-
+      user
     }
   }
 }
