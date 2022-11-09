@@ -20,7 +20,9 @@ export default function Home() {
 
         <div className={styles.donaters}>
           <h3>Apoiadores: </h3>
-          <img src="https://sujeitoprogramador.com/steve.png" alt="Foto do usuário" />
+          <div className={styles.donatersImages}>
+            <img src="https://sujeitoprogramador.com/steve.png" alt="Foto do usuário" />
+          </div>
         </div>
       </main>
     </>

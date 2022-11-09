@@ -2,6 +2,7 @@
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 2rem;
+  min-height: calc(100vh - 6rem);
 
   display: flex;
   align-items: center;
@@ -43,18 +44,27 @@
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  margin-bottom: rem;
 
   h3 {
     color: #141a29;
     font-size: 1.5rem;
     text-align: center;
-    margin-top: 5rem;
+    margin-top: 2rem;
+  }
+
+  .donatersImages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   img {
     width: 65px;
     height: 65px;
+    margin-top: 1rem;
     border-radius: 50%;
     border: 2px solid #141a29;
     transition: all 0.2s;
