@@ -1,4 +1,5 @@
-import { format } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
@@ -23,6 +24,8 @@ interface BoardProps {
   user: {
     id: string;
     name: string;
+    vip: boolean;
+    lastDonate: Date | string;
   }
   data: string;
 }
@@ -169,10 +172,15 @@ export default function Board({ user, data }: BoardProps) {
                     <FiCalendar size={20} color='#ffb800' />
                     <time>{task.createdFormated}</time>
                   </div>
-                  <button onClick={() => handleEditTask(task)}>
-                    <FiEdit2 size={20} color='#fff' />
-                    <span>Editar</span>
-                  </button>
+
+                  {user.vip && (
+                    <button onClick={() => handleEditTask(task)}>
+                      <FiEdit2 size={20} color='#fff' />
+                      <span>Editar</span>
+                    </button>
+                  )}
+
+
                 </div>
 
                 <button onClick={() => handleDelete(task.id)}>
@@ -186,15 +194,17 @@ export default function Board({ user, data }: BoardProps) {
 
       </main>
 
-      <div className={styles.vipContainer}>
-        <h3>Obrigado por apoiar este projeto</h3>
-        <div>
-          <FiClock size={28} color='#fff' />
-          <time>
-            Última doação foi a 3 dias.
-          </time>
+      {user.vip && (
+        <div className={styles.vipContainer}>
+          <h3>Obrigado por apoiar este projeto</h3>
+          <div>
+            <FiClock size={28} color='#fff' />
+            <time>
+              Última doação foi {formatDistance(new Date(user.lastDonate), new Date(), {locale: ptBR} )}
+            </time>
+          </div>
         </div>
-      </div>
+      )}
 
       <SuportButton />
     </>
@@ -227,7 +237,9 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
 
   const user = {
     name: session?.user.name,
-    id: session?.id
+    id: session?.id,
+    vip: session?.vip,
+    lastDonate: session?.lastDonate
   }
 
   return {
