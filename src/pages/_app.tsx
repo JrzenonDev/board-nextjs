@@ -6,7 +6,7 @@ import { Header } from '../components/Header';
 import '../styles/global.scss';
 
 const initialOptions = {
-  'client-id': 'AXIM_FXxxdmOHs8EEvrE2Xoh3FFiwHHAz3fQ9UUk5nslemayJp9TBNlMs93bAO05EN2XmZhmR7owQLSy',
+  'client-id': 'AcI-iIfdrMQX3LC5e-meAyUs6uug3AVc3kKi-SADB888VXPL0W6jdY7s_RnzsWVMcSgniYqA1TFC8MDe',
   currency: 'BRL',
   intent: 'capture'
 }
