@@ -2,6 +2,7 @@ import { PayPalButtons } from '@paypal/react-paypal-js';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useState } from 'react';
 import firebase from '../../services/firebaseConnection';
 import styles from './styles.module.scss';
@@ -37,11 +38,21 @@ export default function Donate({ user }: DonateProps) {
         <title>Apoie a página Board a ficar online</title>
       </Head>
       <main className={styles.container}>
-        <img src='/images/rocket.svg' alt='Seja apoiador' />
+        <Image
+          src='/images/rocket.svg'
+          alt='Seja apoiador'
+          width={409}
+          height={342}
+        />
 
         {vip && (
           <div className={styles.vip}>
-            <img src={user.image} alt='Foto de perfil do usuário' />
+            <Image
+              src={user.image}
+              alt='Foto de perfil do usuário'
+              width={50}
+              height={50}
+            />
             <span>Parabéns você é um apoiador.</span>
           </div>
         )}

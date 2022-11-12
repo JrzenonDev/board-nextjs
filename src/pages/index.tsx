@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useState } from 'react';
 import firebase from '../services/firebaseConnection';
 import styles from '../styles/styles.module.scss';
@@ -25,7 +26,12 @@ export default function Home({ data }: HomeProps) {
         <title>Board - Organizando suas tarefas</title>
       </Head>
       <main className={styles.contentContainer}>
-        <img src="/images/board-user.svg" alt="Ferramenta Board" />
+        <Image
+          src='/images/board-user.svg'
+          alt='Ferramenta Board'
+          width={553}
+          height={384}
+        />
 
         <section className={styles.callToAction}>
           <h1>Uma ferramenta para o seu dia a dia Escreva, paneje e organize-se...</h1>
@@ -40,9 +46,11 @@ export default function Home({ data }: HomeProps) {
 
           <div className={styles.donatersImages}>
             {donaters.map(item => (
-              <img
+              <Image
                 src={item.image}
-                alt="Foto do usuário"
+                alt='Foto do usuário'
+                width={65}
+                height={65}
                 key={item.id}
               />
             ))}

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import SignInButton from '../SignInButton';
 import styles from './styles.module.scss';
@@ -7,7 +8,12 @@ export function Header() {
     <header className={styles.headerContainer}>
       <div className={styles.headerContent}>
         <Link href='/'>
-          <img src='/images/logo.svg' alt='Meu Boarding' />
+          <Image
+            src='/images/logo.svg'
+            alt='Meu Boarding'
+            width={72}
+            height={76}
+          />
         </Link>
 
         <nav>
